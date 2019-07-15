@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.yk.pyku.dao.user.UserDao">
+
+    <resultMap id="userResult" type="com.yk.pyku.domain.user.UserDo">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="deleted" property="deleted"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="email" property="email"/>
+        <result column="last_logged_time" property="lastLoggedTime"/>
+        <result column="status" property="status"/>
+
+    </resultMap>
+
+
+    <sql id="selectColumnList">
+        id
+        ,create_time
+        ,modify_time
+        ,deleted
+        ,username
+        ,password
+        ,real_name
+        ,email
+        ,last_logged_time
+        ,status
+    </sql>
+
+
+    <sql id="queryWhereSql">
+        where deleted = 0
+        <if test="id != null">
+            AND id=#{id}
+        </if>
+        <if test="createTime != null">
+            AND create_time=#{createTime}
+        </if>
+        <if test="modifyTime != null">
+            AND modify_time=#{modifyTime}
+        </if>
+        <if test="username != null">
+            AND username=#{username}
+        </if>
+        <if test="password != null">
+            AND password=#{password}
+        </if>
+        <if test="realName != null">
+            AND real_name=#{realName}
+        </if>
+        <if test="email != null">
+            AND email=#{email}
+        </if>
+        <if test="lastLoggedTime != null">
+            AND last_logged_time=#{lastLoggedTime}
+        </if>
+        <if test="status != null">
+            AND status=#{status}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.yk.pyku.domain.user.UserDo">
+        insert into wuchen.user (
+        create_time
+        ,modify_time
+        ,deleted
+        ,username
+        ,password
+        ,real_name
+        ,email
+        ,last_logged_time
+        ,status
+
+        ) values (
+        <![CDATA[
+           now()
+           ,now()
+           ,0
+           ,#{username}
+           ,#{password}
+           ,#{realName}
+           ,#{email}
+           ,#{lastLoggedTime}
+           ,#{status}
+        ]]>
+        );
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select
+            LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>
