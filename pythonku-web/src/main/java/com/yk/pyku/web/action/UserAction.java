@@ -9,6 +9,8 @@ import com.yk.pyku.domain.common.enums.ResultEnum;
 import com.yk.pyku.domain.user.UserDo;
 import com.yk.pyku.enums.RedisKeyEnum;
 import com.yk.pyku.util.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserAction {
+    private static final Logger logger = LoggerFactory.getLogger(UserAction.class);
     @Autowired
     private UserAO userAO;
     @Autowired
@@ -40,8 +43,7 @@ public class UserAction {
         try {
 //            userAO.register(reqParam.getData());
             String key = String.format(RedisKeyEnum.SmsLogin.getContent(), "15210785338@163.com");
-            redisService.set(key, RandomUtil.getVerifyCode());
-            redisService.expire(key, 60 * 10);
+            redisService.set(key, RandomUtil.getVerifyCode(), 60 * 10);
             return ResultResponse.getSuccessResultInfo(ResultEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
