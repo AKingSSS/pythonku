@@ -12,4 +12,6 @@ public interface UserDao {
      * @throws Exception
      */
     public Long insert(UserDo userDo) throws Exception;
+
+    public UserDo queryUserInfo(UserDo userDo) throws Exception;
 }

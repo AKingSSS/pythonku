@@ -3,38 +3,70 @@
 <mapper namespace="com.yk.pyku.dao.user.UserDao">
 
     <resultMap id="userResult" type="com.yk.pyku.domain.user.UserDo">
-        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="password" property="password"/>
+        <result column="mobile" property="mobile"/>
+        <result column="register_source_type" property="registerSourceType"/>
+        <result column="register_source" property="registerSource"/>
+        <result column="try_start_time" property="tryStartTime"/>
+        <result column="try_end_time" property="tryEndTime"/>
+        <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
-        <result column="deleted" property="deleted"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="real_name" property="realName"/>
-        <result column="email" property="email"/>
-        <result column="last_logged_time" property="lastLoggedTime"/>
-        <result column="status" property="status"/>
-
+        <result column="remark" property="remark"/>
     </resultMap>
 
 
     <sql id="selectColumnList">
-        id
+        user_id
+        ,user_name
+        ,nick_name
+        ,password
+        ,mobile
+        ,register_source_type
+        ,register_source
+        ,try_start_time
+        ,try_end_time
+        ,status
         ,create_time
         ,modify_time
-        ,deleted
-        ,username
-        ,password
-        ,real_name
-        ,email
-        ,last_logged_time
-        ,status
+        ,remark
     </sql>
 
 
     <sql id="queryWhereSql">
-        where deleted = 0
-        <if test="id != null">
-            AND id=#{id}
+        where 1 = 1
+        <if test="userId != null">
+            AND user_id=#{userId}
+        </if>
+        <if test="userName != null">
+            AND user_name=#{userName}
+        </if>
+        <if test="nickName != null">
+            AND nick_name=#{nickName}
+        </if>
+        <if test="password != null">
+            AND password=#{password}
+        </if>
+        <if test="mobile != null">
+            AND mobile=#{mobile}
+        </if>
+        <if test="registerSourceType != null">
+            AND register_source_type=#{registerSourceType}
+        </if>
+        <if test="registerSource != null">
+            AND register_source=#{registerSource}
+        </if>
+        <if test="tryStartTime != null">
+            AND try_start_time=#{tryStartTime}
+        </if>
+        <if test="tryEndTime != null">
+            AND try_end_time=#{tryEndTime}
+        </if>
+        <if test="status != null">
+            AND status=#{status}
         </if>
         <if test="createTime != null">
             AND create_time=#{createTime}
@@ -42,54 +74,52 @@
         <if test="modifyTime != null">
             AND modify_time=#{modifyTime}
         </if>
-        <if test="username != null">
-            AND username=#{username}
-        </if>
-        <if test="password != null">
-            AND password=#{password}
-        </if>
-        <if test="realName != null">
-            AND real_name=#{realName}
-        </if>
-        <if test="email != null">
-            AND email=#{email}
-        </if>
-        <if test="lastLoggedTime != null">
-            AND last_logged_time=#{lastLoggedTime}
-        </if>
-        <if test="status != null">
-            AND status=#{status}
+        <if test="remark != null">
+            AND remark=#{remark}
         </if>
     </sql>
 
     <insert id="insert" parameterType="com.yk.pyku.domain.user.UserDo">
-        insert into wuchen.user (
-        create_time
-        ,modify_time
-        ,deleted
-        ,username
+        insert into paiku.user (
+         user_name
+        ,nick_name
         ,password
-        ,real_name
-        ,email
-        ,last_logged_time
+        ,mobile
+        ,register_source_type
+        ,register_source
+        ,try_start_time
+        ,try_end_time
         ,status
+        ,create_time
+        ,modify_time
+        ,remark
 
         ) values (
         <![CDATA[
-           now()
-           ,now()
-           ,0
-           ,#{username}
+           #{userName}
+           ,#{nickName}
            ,#{password}
-           ,#{realName}
-           ,#{email}
-           ,#{lastLoggedTime}
+           ,#{mobile}
+           ,#{registerSourceType}
+           ,#{registerSource}
+           ,now()
+           ,#{tryEndTime}
            ,#{status}
+           ,now()
+           ,now()
+           ,#{remark}
         ]]>
         );
-        <selectKey keyProperty="id" resultType="long" order="AFTER">
+        <selectKey keyProperty="user_id" resultType="long" order="AFTER">
             select
             LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="queryUserInfo" parameterType="com.yk.pyku.domain.user.UserDo" resultMap="userResult">
+        select
+        <include refid="selectColumnList" />
+        from paiku.user
+        <include refid="queryWhereSql" />
+    </select>
 </mapper>

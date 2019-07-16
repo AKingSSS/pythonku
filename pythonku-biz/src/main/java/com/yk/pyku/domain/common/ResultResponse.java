@@ -1,7 +1,5 @@
 package com.yk.pyku.domain.common;
 
-import com.yk.pyku.domain.common.enums.ResultEnum;
-
 /**
  * @ClassName ResultResponse
  * @Description
